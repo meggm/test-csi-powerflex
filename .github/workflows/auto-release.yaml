@@ -11,5 +11,6 @@ jobs:
       version: "minor"
       images: "csi-vxflexos"
     secrets: inherit
-    env:
-      GPG_PRIVATE_KEY: ${{ secrets.CSM_GPG_PRIVATE_KEY }}    
+    steps:
+      - name: Set GPG Private Key as an Environment Variable
+        run: echo "GPG_PRIVATE_KEY=${{ secrets.CSM_GPG_PRIVATE_KEY }}" >> $GITHUB_ENV
