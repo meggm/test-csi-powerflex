@@ -8,12 +8,15 @@ on:
 jobs:
   read-secrets:
     runs-on: ubuntu-latest
+    outputs:
+      gpg_key:
+        value: ${{ steps.set-gpg-key.outputs.gpg_key }}
     steps:
       - name: Sanitize and Set GPG Private Key as an Output
         id: set-gpg-key
         run: |
           sanitized_key=$(echo "${{ secrets.CSM_GPG_PRIVATE_KEY }}" | tr -d '\r')
-          echo "GPG_KEY=${sanitized_key}" >> $GITHUB_ENV
+          echo "::set-output name=gpg_key::${sanitized_key}"
 
   csm-release:
     needs: read-secrets
@@ -21,5 +24,7 @@ jobs:
     with:
       version: "minor"
       images: "csi-vxflexos"
-      gpg_key: ${{ needs.read-secrets.outputs.GPG_KEY }}
+      gpg_key: ${{ needs.read-secrets.outputs.gpg_key }}
     secrets: inherit
+
+
