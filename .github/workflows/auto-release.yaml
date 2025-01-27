@@ -21,8 +21,8 @@ jobs:
     with:
       version: "minor"
       images: "csi-vxflexos"
-      GPG_KEY: ${{ secrets.CSM_GPG_PRIVATE_KEY }}  # Pass the secret directly as an input
     secrets: inherit
+
 
 
 
