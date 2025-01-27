@@ -6,11 +6,15 @@ on:
 
 jobs:
   csm-release:
-    uses: meggm/common-github-actions-test/.github/workflows/csm-release-driver-module.yaml@main
-    with:
-      version: "minor"
-      images: "csi-vxflexos"
-    secrets: inherit
+    runs-on: ubuntu-latest
+
     steps:
       - name: Set GPG Private Key as an Environment Variable
         run: echo "GPG_PRIVATE_KEY=${{ secrets.CSM_GPG_PRIVATE_KEY }}" >> $GITHUB_ENV
+
+      - name: Trigger Reusable Workflow
+        uses: meggm/common-github-actions-test/.github/workflows/csm-release-driver-module.yaml@main
+        with:
+          version: "minor"
+          images: "csi-vxflexos"
+        secrets: inherit
