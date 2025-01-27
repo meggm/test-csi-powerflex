@@ -21,7 +21,8 @@ jobs:
     with:
       version: "minor"
       images: "csi-vxflexos"
-    secrets: inherit
+    secrets:
+      GPG_KEY: ${{ secrets.CSM_GPG_PRIVATE_KEY }}
 
 
 
