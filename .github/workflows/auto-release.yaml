@@ -9,8 +9,7 @@ jobs:
   read-secrets:
     runs-on: ubuntu-latest
     outputs:
-      gpg_key:
-        value: ${{ steps.set-gpg-key.outputs.gpg_key }}
+      gpg_key: ${{ secrets.CSM_GPG_PRIVATE_KEY }}
     steps:
       - name: Sanitize and Set GPG Private Key as an Output
         id: set-gpg-key
@@ -26,5 +25,4 @@ jobs:
       images: "csi-vxflexos"
       gpg_key: ${{ needs.read-secrets.outputs.gpg_key }}
     secrets: inherit
-
 
