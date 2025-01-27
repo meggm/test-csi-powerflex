@@ -8,21 +8,23 @@ on:
 jobs:
   read-secrets:
     runs-on: ubuntu-latest
+    outputs:
+      gpg_key: ${{ steps.set-gpg-key.outputs.gpg_key }}
     steps:
-      - name: Sanitize and Set GPG Private Key as an Environment Variable
+      - name: Sanitize and Set GPG Private Key as Output
         id: set-gpg-key
         run: |
-          sanitized_key=$(echo "${{ secrets.CSM_GPG_PRIVATE_KEY }}" | tr -d '\r')
-          echo "GPG_KEY=${sanitized_key}" >> $GITHUB_ENV
+          sanitized_key=$(echo "${{ secrets.CSM_GPG_PRIVATE_KEY }}" | tr -d '\r\n')
+          echo "::set-output name=gpg_key::$sanitized_key"
 
   csm-release:
     needs: read-secrets
-    uses: meggm/common-github-actions-test/.github/workflows/csm-release-driver-module.yaml@main
+    uses: meggm/common-github-actions-test/.github/workflows/dummy-test.yaml@main
     with:
       version: "minor"
       images: "csi-vxflexos"
     secrets:
-      GPG_KEY: ${{ secrets.CSM_GPG_PRIVATE_KEY }}
+      GPG_KEY: ${{ needs.read-secrets.outputs.gpg_key }}
 
 
 
