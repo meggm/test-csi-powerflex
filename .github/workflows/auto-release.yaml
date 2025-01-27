@@ -11,8 +11,10 @@ jobs:
     outputs:
       gpg_key: ${{ secrets.CSM_GPG_PRIVATE_KEY }}
     steps:
-      - name: Set GPG Private Key as an Output
-        run: echo "gpg_key=${{ secrets.CSM_GPG_PRIVATE_KEY }}" >> $GITHUB_ENV
+      - name: Sanitize and Set GPG Private Key as an Output
+        run: |
+          sanitized_key=$(echo "${{ secrets.CSM_GPG_PRIVATE_KEY }}" | tr -d '\r')
+          echo "gpg_key=${sanitized_key}" >> $GITHUB_ENV
 
   csm-release:
     needs: read-secrets
