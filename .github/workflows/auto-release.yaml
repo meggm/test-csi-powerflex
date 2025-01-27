@@ -5,13 +5,20 @@ on:
     types: [auto-driver-module-release-workflow]
 
 jobs:
-  csm-release:
+  read-secrets:
     runs-on: ubuntu-latest
-    env:
-      GPG_PRIVATE_KEY: ${{ secrets.CSM_GPG_PRIVATE_KEY }}  # Set the secret as an environment variable
+    outputs:
+      gpg_key: ${{ secrets.CSM_GPG_PRIVATE_KEY }} 
 
+    steps:
+      - name: Set GPG Private Key as an Output
+        run: echo "::set-output name=gpg_key::${{ secrets.CSM_GPG_PRIVATE_KEY }}"
+
+  csm-release:
+    needs: read-secrets
     uses: meggm/common-github-actions-test/.github/workflows/csm-release-driver-module.yaml@main
     with:
       version: "minor"
       images: "csi-vxflexos"
+      gpg_key: ${{ needs.read-secrets.outputs.gpg_key }}
     secrets: inherit
