@@ -3,7 +3,7 @@ name: Auto Release CSI-Powerflex
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [auto-release-workflow]
+    types: [auto-driver-module-release-workflow]
 
 jobs:
   csm-release:
