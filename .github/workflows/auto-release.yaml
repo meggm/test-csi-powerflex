@@ -11,8 +11,6 @@ jobs:
     with:
       version: "minor"
       images: "csi-vxflexos"
-      gpg_private_key: ${{ github.event.client_payload.gpg_key }}
-      gpg_passphrase: ${{ github.event.client_payload.passphrase }}
     secrets: inherit  
 
 
